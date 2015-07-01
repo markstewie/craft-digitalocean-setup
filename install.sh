@@ -23,9 +23,6 @@ sudo nano /etc/nginx/nginx.conf
 # COPY MODIFYIED PHP INI
 cp files/php.ini /etc/php5/fpm/php.ini
 
-# RESTART SERVER
-sudo service nginx restart
-
 # SECURE SERVER
 read -p "Set new root password, make a note of it! " OK
 passwd
@@ -47,16 +44,15 @@ sudo chmod -R g+s /var/www/staging.$DOMAIN
 
 # SSH
 read -p "Copy your ssh public key from your computer using 'cat ~/.ssh/id_rsa.pub' and paste it in file that opens..." OK
-su - deploy
-mkdir .ssh
-chmod 700 .ssh
-nano .ssh/authorized_keys
+mkdir /home/deploy/.ssh
+chmod 700 /home/deploy/.ssh
+nano /home/deploy/.ssh/authorized_keys
 
-chmod 600 .ssh/authorized_keys
+chmod 600 /home/deploy/.ssh/authorized_keys
 
 # CREATE SSH KEY FOR DEPLOY
 read -p "Create a server ssh key for deployment. Copy when needed using 'cat ~/.ssh/id_rsa.pub'" OK
-ssh-keygen -t rsa
+sudo -u deploy ssh-keygen -t rsa
 
 # WANT A SPECIAL PORT?
 read -p "What port do you want to SSH in with? (Will leave as 22 by default)" PORT
