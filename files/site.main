@@ -1,0 +1,17 @@
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server ipv6only=on;
+
+  root /var/www/${DOMAIN}/htdocs/current/public_html;
+  index index.php index.html index.htm;
+
+  server_name ${DOMAIN} www.${DOMAIN};
+
+  error_log /var/www/${DOMAIN}/log/error.log gzip;
+  access_log /var/www/${DOMAIN}/log/access.log gzip;
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+
