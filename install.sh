@@ -43,26 +43,27 @@ sudo chmod -R g+s /var/www/$DOMAIN
 sudo chmod -R g+s /var/www/staging.$DOMAIN
 
 # SSH
-read -p "Copy your ssh public key from your computer using 'cat ~/.ssh/id_rsa.pub' and paste it in file that opens..." OK
+read -p "==== ADD YOUR PERSONAL SSH KEY ====\nCopy your ssh public key from your computer using 'cat ~/.ssh/id_rsa.pub' and paste it in file that opens..." OK
 mkdir /home/deploy/.ssh
 chmod 700 /home/deploy/.ssh
 nano /home/deploy/.ssh/authorized_keys
 
 chmod 600 /home/deploy/.ssh/authorized_keys
+chown -R deploy:deploy /home/deploy/.ssh
 
 # CREATE SSH KEY FOR DEPLOY
-read -p "Create a server ssh key for deployment. Copy when needed using 'cat ~/.ssh/id_rsa.pub'" OK
+read -p "==== CREATE NEW SSH KEY FOR DEPLOYMENT====\nCreate a server ssh key for deployment. Copy when needed using 'cat ~/.ssh/id_rsa.pub :'" OK
 sudo -u deploy ssh-keygen -t rsa
 
 # WANT A SPECIAL PORT?
-read -p "What port do you want to SSH in with? (Will leave as 22 by default)" PORT
+read -p "==== SSH PORT ====\nWhat port do you want to SSH in with? I use a random 5 digit number for super security. (Will be left as 22 by default) :" PORT
 PORT=${PORT:-22}
 sed -i -e "s/\${PORT}/$PORT/g" files/sshd_config
 sudo cp files/sshd_config /etc/ssh/sshd_config
 
 sudo service ssh restart
 
-read -p "Secure your database. Make notes of passwords." OK
+read -p "==== DATABASE ====\nSecure your database. Make notes of passwords." OK
 mysql_secure_installation
 
 
@@ -71,8 +72,7 @@ sudo apt-get update
 sudo apt-get install php5-cli
 sudo apt-get install php5-mcrypt
 sudo php5enmod mcrypt
-sudo a2enmod rewrite
 
-sudo service apache2 restart
+sudo service nginx restart
 
 #sed -i -e "s/\${NAME}/$NAME/g" files/test.txt
