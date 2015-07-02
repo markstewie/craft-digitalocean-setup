@@ -7,8 +7,8 @@ server {
 
   server_name staging.${DOMAIN};
 
-  error_log /var/www/staging.${DOMAIN}/log/error.log gzip;
-  access_log /var/www/staging.${DOMAIN}/log/access.log gzip;
+  error_log /var/www/staging.${DOMAIN}/log/error.log warn;
+  access_log /var/www/staging.${DOMAIN}/log/access.log combined;
 
   location / {
     try_files $uri $uri/ =404;
