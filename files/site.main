@@ -10,6 +10,21 @@ server {
   error_log /var/www/${DOMAIN}/log/error.log warn;
   access_log /var/www/${DOMAIN}/log/access.log combined;
 
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+  }
+
+  location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+  }
+
   location / {
     try_files $uri $uri/ =404;
   }

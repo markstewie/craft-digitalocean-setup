@@ -2,7 +2,7 @@
 # See the sshd_config(5) manpage for details
 
 # What ports, IPs and protocols we listen for
-Port ${PORT}
+Port 22
 # Use these options to restrict which interfaces/protocols sshd will bind to
 #ListenAddress ::
 #ListenAddress 0.0.0.0
@@ -25,7 +25,7 @@ LogLevel INFO
 
 # Authentication:
 LoginGraceTime 120
-PermitRootLogin no
+PermitRootLogin yes
 StrictModes yes
 
 RSAAuthentication yes
