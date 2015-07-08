@@ -87,7 +87,7 @@ cat /home/deploy/.ssh/id_rsa.pub
 
 echo "_________________________________________";
 echo "=>> Add deploy key to remote repository";
-read -p "Now is a good time to setup your remote repository on Github or Bitbucket etc. Your new server ssh key for the deploy user is printed above. Copy it to the deploy keys in your remote repository. You can see this again in the future by logging in as deploy user and using `cat ~/.ssh/id_rsa.pub`:"
+read -p "Now is a good time to setup your remote repository on Github or Bitbucket etc. Your new server ssh key for the deploy user is printed above. Copy it to the deploy keys in your remote repository. You can see this again in the future by logging in as deploy user and using 'cat ~/.ssh/id_rsa.pub':"
 
 # COPY SSH CONFIG -> SSH LOGIN ONLY
 sudo cp files/sshd_config /etc/ssh/sshd_config
