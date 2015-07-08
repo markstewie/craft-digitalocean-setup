@@ -41,28 +41,31 @@ passwd
 
 echo "_________________________________________";
 echo "=>> Next we need to add the new 'deploy' user who will also require a strong password";
-read -p "    Add a strong password and enter through prompts that follow... " OK
+read -p "    Add a strong password for the `deploy` user and enter through prompts that follow... " OK
 adduser deploy
 
 echo "_________________________________________";
 echo "=>> Add 'deploy' to the list of sudoers";
-read -p "    Add 'deploy   ALL=(ALL:ALL) ALL' in # User privilege specification section " OK
+read -p "    Copy 'deploy   ALL=(ALL:ALL) ALL' and paste in the # User privilege specification section of the file that opens..." OK
 visudo
 
 # ADD USER TO SUDO GROUP
 gpasswd -a deploy sudo
 
+# Assign deploy to www-data group
+sudo usermod -g www-data deploy
+
 # CHANGE WEB ROOT PERMISSIONS
-chown -R deploy:deploy /var/www/$DOMAIN
-chown -R deploy:deploy /var/www/staging.$DOMAIN
-sudo chmod -R g+s /var/www/$DOMAIN
-sudo chmod -R g+s /var/www/staging.$DOMAIN
+chown -R www-data:www-data /var/www/$DOMAIN
+chown -R www-data:www-data /var/www/staging.$DOMAIN
 mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/app
 mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/storage
 mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/app
 mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/storage
-sudo chmod -R 777 /var/www/$DOMAIN/htdocs/shared/craft/
-sudo chmod -R 777 /var/www/staging.$DOMAIN/htdocs/shared/craft/
+sudo chgrp -R www-data /var/www
+sudo chmod -R g+rwx /var/www
+sudo chmod -R 774 /var/www/$DOMAIN/htdocs/shared/craft/
+sudo chmod -R 774 /var/www/staging.$DOMAIN/htdocs/shared/craft/
 
 # SSH
 echo "_________________________________________";
@@ -78,8 +81,13 @@ chown -R deploy:deploy /home/deploy/.ssh
 # CREATE SSH KEY FOR DEPLOY
 echo "_________________________________________";
 echo "=>> Create a new SSH key for deployment";
-read -p "    Create a server ssh key for deployment. Copy when needed using 'cat ~/.ssh/id_rsa.pub when logged in as deploy:'" OK
+read -p "    Create a server ssh key for deployment (press enter at each prompt that follows):" OK
 sudo -u deploy ssh-keygen -t rsa
+cat /home/deploy/.ssh/id_rsa.pub
+
+echo "_________________________________________";
+echo "=>> Add deploy key to remote repository";
+read -p "Now is a good time to setup your remote repository on Github or Bitbucket etc. Your new server ssh key for the deploy user is printed above. Copy it to the deploy keys in your remote repository. You can see this again in the future by logging in as deploy user and using `cat ~/.ssh/id_rsa.pub`:"
 
 # COPY SSH CONFIG -> SSH LOGIN ONLY
 sudo cp files/sshd_config /etc/ssh/sshd_config
@@ -106,7 +114,7 @@ echo " ";
 echo " ";
 echo "====================================================";
 echo "=== ALL DONE. You should be able to ssh in with  ===";
-echo "===    ssh deploy@yourdomain.com -p yourport     ==="
+echo "===          ssh deploy@yourdomain.com           ==="
 echo "====================================================";
 echo " ";
 
