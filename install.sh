@@ -58,14 +58,14 @@ sudo usermod -g www-data deploy
 # CHANGE WEB ROOT PERMISSIONS
 chown -R www-data:www-data /var/www/$DOMAIN
 chown -R www-data:www-data /var/www/staging.$DOMAIN
-mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/app
-mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/storage
-mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/app
-mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/storage
+mkdir -p /var/www/$DOMAIN/htdocs/shared/craft
+# mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/storage
+mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft
+# mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/storage
 sudo chgrp -R www-data /var/www
 sudo chmod -R g+rwx /var/www
-sudo chmod -R 774 /var/www/$DOMAIN/htdocs/shared/craft/
-sudo chmod -R 774 /var/www/staging.$DOMAIN/htdocs/shared/craft/
+# sudo chmod -R 774 /var/www/$DOMAIN/htdocs/shared/craft/
+# sudo chmod -R 774 /var/www/staging.$DOMAIN/htdocs/shared/craft/
 
 # SSH
 echo "_________________________________________";
@@ -107,7 +107,7 @@ sudo apt-get install php5-cli
 sudo apt-get install php5-mcrypt
 sudo apt-get install unzip
 sudo php5enmod mcrypt
-
+sudo service php5-fpm restart
 sudo service nginx restart
 
 echo " ";

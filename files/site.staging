@@ -1,22 +1,15 @@
 server {
   listen 80;
   listen [::]:80;
+  charset utf8;
 
   root /var/www/staging.${DOMAIN}/htdocs/current/public_html;
-  index index.php index.html index.htm;
+  index index.php index.html;
 
   server_name staging.${DOMAIN};
 
-  error_log /var/www/staging.${DOMAIN}/log/error.log warn;
-  access_log /var/www/staging.${DOMAIN}/log/access.log combined;
-
-  location ~ \.php$ {
-    try_files $uri =404;
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    fastcgi_index index.php;
-    include fastcgi_params;
-  }
+  error_log /var/www/staging.${DOMAIN}/log/error.log debug;
+  access_log /var/www/staging.${DOMAIN}/log/access.log;
 
   location ~ \.php$ {
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -25,8 +18,18 @@ server {
     include fastcgi_params;
   }
 
-  location / {
-    try_files $uri $uri/ =404;
+  location ~ ^(.*)$ {
+      try_files $uri $uri/ /index.php?p=$uri&$args;
   }
+
+  location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+    expires max;
+    add_header Pragma public;
+    add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+  }
+
+  location = /robots.txt  { access_log off; log_not_found off; }
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location ~ /\. { access_log off; log_not_found off; deny all; }
 }
 
