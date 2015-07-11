@@ -36,7 +36,7 @@ cp files/php.ini /etc/php5/fpm/php.ini
 # SECURE SERVER
 echo "_________________________________________";
 echo "=>> Next we need to secure the server.";
-read -p "    Set new root/sudo password, be sure to make a note of it! " OK
+read -p "    Set new root/sudo password in the prompt that follows, be sure to make a note of it! " OK
 passwd
 
 echo "_________________________________________";
@@ -114,7 +114,9 @@ echo " ";
 echo " ";
 echo "====================================================";
 echo "=== ALL DONE. You should be able to ssh in with  ===";
-echo "===          ssh deploy@yourdomain.com           ==="
+echo "===          ssh deploy@yourdomain.com           ===";
 echo "====================================================";
+echo " ";
+echo "(you will not be able to ssh as root again so ensure this works before closing this tab!)";
 echo " ";
 
