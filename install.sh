@@ -59,13 +59,10 @@ sudo usermod -g www-data deploy
 chown -R www-data:www-data /var/www/$DOMAIN
 chown -R www-data:www-data /var/www/staging.$DOMAIN
 mkdir -p /var/www/$DOMAIN/htdocs/shared/craft
-# mkdir -p /var/www/$DOMAIN/htdocs/shared/craft/storage
 mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft
-# mkdir -p /var/www/staging.$DOMAIN/htdocs/shared/craft/storage
 sudo chgrp -R www-data /var/www
 sudo chmod -R g+rwx /var/www
-# sudo chmod -R 774 /var/www/$DOMAIN/htdocs/shared/craft/
-# sudo chmod -R 774 /var/www/staging.$DOMAIN/htdocs/shared/craft/
+
 
 # SSH
 echo "_________________________________________";
